@@ -2,25 +2,30 @@
 # 起動方法：
 # >python text_gtts.py
 
-# 2020/4/11 ver 1.0  1stリリース
-# 
+# 2020/4/11 ver 1.0   1stリリース
+# 2020/4/11 ver 1.01  言語選択機能追加
 import tkinter as tk
 from tkinter import ttk
 from gtts import gTTS
 from playsound import playsound
 import threading
 import os
-
+import re
 
 out_file = 'out.mp3'
 
+
+def get_lang_str():
+    global cb_str
+    return re.split(":", cb_str.get())[0]                   # Comboboxの値から言語文字(:より前)を取得
+    
 
 def output_talk(txt):
     """
         コマンド文字列の生成
         @param txt   発声テキスト
     """
-    tts = gTTS(txt, lang='ja')
+    tts = gTTS(txt, lang=get_lang_str())
     tts.save(out_file)
 
 
@@ -103,6 +108,92 @@ sc.pack(side='left', fill='y')
 f2 = ttk.Frame(top, padding=5)
 f2.pack(fill='x')
 
+cb_str = tk.StringVar()
+cb = ttk.Combobox(f2, textvariable=cb_str)
+cb.pack(fill='x')
+
+langs = ['af: Afrikaans',
+    'ar: Arabic',
+    'bn: Bengali',
+    'bs: Bosnian',
+    'ca: Catalan',
+    'cs: Czech',
+    'cy: Welsh',
+    'da: Danish',
+    'de: German',
+    'el: Greek',
+    'en-au: English (Australia)',
+    'en-ca: English (Canada)',
+    'en-gb: English (UK)',
+    'en-gh: English (Ghana)',
+    'en-ie: English (Ireland)',
+    'en-in: English (India)',
+    'en-ng: English (Nigeria)',
+    'en-nz: English (New Zealand)',
+    'en-ph: English (Philippines)'
+    'en-tz: English (Tanzania)',
+    'en-uk: English (UK)',
+    'en-us: English (US)',
+    'en-za: English (South Africa)',
+    'en: English',
+    'eo: Esperanto',
+    'es-es: Spanish (Spain)',
+    'es-us: Spanish (United States)',
+    'es: Spanish',
+    'et: Estonian',
+    'fi: Finnish',
+    'fr-ca: French (Canada)',
+    'fr-fr: French (France)',
+    'fr: French',
+    'gu: Gujarati',
+    'hi: Hindi',
+    'hr: Croatian',
+    'hu: Hungarian',
+    'hy: Armenian',
+    'id: Indonesian',
+    'is: Icelandic',
+    'it: Italian',
+    'ja: Japanese',
+    'jw: Javanese',
+    'km: Khmer',
+    'kn: Kannada',
+    'ko: Korean',
+    'la: Latin',
+    'lv: Latvian',
+    'mk: Macedonian',
+    'ml: Malayalam',
+    'mr: Marathi',
+    'my: Myanmar (Burmese)',
+    'ne: Nepali',
+    'nl: Dutch',
+    'no: Norwegian',
+    'pl: Polish',
+    'pt-br: Portuguese (Brazil)',
+    'pt-pt: Portuguese (Portugal)',
+    'pt: Portuguese',
+    'ro: Romanian',
+    'ru: Russian',
+    'si: Sinhala',
+    'sk: Slovak',
+    'sq: Albanian',
+    'sr: Serbian',
+    'su: Sundanese',
+    'sv: Swedish',
+    'sw: Swahili',
+    'ta: Tamil',
+    'te: Telugu',
+    'th: Thai',
+    'tl: Filipino',
+    'tr: Turkish',
+    'uk: Ukrainian',
+    'ur: Urdu',
+    'vi: Vietnamese',
+    'zh-cn: Chinese (Mandarin/China)',
+    'zh-tw: Chinese (Mandarin/Taiwan)']
+
+cb['values'] = langs
+
+cb.current(40)                               # 日本語を初期値にする。
 
 # Button
 f3 = ttk.Frame(top, padding=0)
